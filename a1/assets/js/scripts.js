@@ -1,7 +1,7 @@
 // MODAL WITH TITLE
+// Handles clicking on gallery images to open a modal with the image and pet name
 document.querySelectorAll('.gallery-img').forEach(img => {
   img.onclick = function () {
-
     // set image
     document.getElementById('modalImage').src = this.src;
 
@@ -14,28 +14,55 @@ document.querySelectorAll('.gallery-img').forEach(img => {
   };
 });
 
-
 // IMAGE PREVIEW + VALIDATION
-document.getElementById('imageInput').addEventListener('change', function () {
-  const file = this.files[0];
+// Validates image uploads and displays a preview of selected images
+const imageInput = document.getElementById('imageInput');
 
-  if (!file) return;
+if (imageInput) {
+  imageInput.addEventListener('change', function () {
+    const file = this.files[0];
 
-  const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    if (!file) return;
 
-  if (!allowed.includes(file.type)) {
-    alert('Only JPG, PNG, GIF, WEBP allowed');
-    this.value = '';
-    return;
-  }
+    // Check if file type is allowed
+    const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-  const reader = new FileReader();
+    if (!allowed.includes(file.type)) {
+      alert('Only JPG, PNG, GIF, WEBP allowed');
+      this.value = '';
+      return;
+    }
 
-  reader.onload = function (e) {
-    const preview = document.getElementById('preview');
-    preview.src = e.target.result;
-    preview.style.display = 'block';
-  };
+    // Read file and display preview
+    const reader = new FileReader();
 
-  reader.readAsDataURL(file);
-});
+    reader.onload = function (e) {
+      const preview = document.getElementById('preview');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// FILTER FUNCTIONALITY
+// Filters pet cards based on selected status value
+const filter = document.getElementById("filter");
+
+if (filter) {
+  filter.addEventListener("change", function () {
+    const value = this.value;
+    const cards = document.querySelectorAll(".pet-card");
+
+    cards.forEach(card => {
+      const status = card.getAttribute("data-status");
+
+      if (value === "all" || status === value) {
+        card.style.display = "block";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+}
