@@ -22,22 +22,54 @@
 
 <header>
   <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <span class="material-icons">pets</span>
-      <a class="navbar-brand ms-2" href="index.html">PetConnect</a>
+    <div class="container d-flex align-items-center">
 
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <!-- LOGO -->
+      <div class="d-flex align-items-center">
+        <span class="material-icons me-2">pets</span>
+        <a class="navbar-brand fw-semibold m-0" href="index.html">PetConnect</a>
+      </div>
+
+      <!-- TOGGLE -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-end" id="nav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="pets.html">Browse Pets</a></li>
-          <li class="nav-item"><a class="nav-link active" href="gallery.html">Gallery</a></li>
-          <li class="nav-item"><a class="nav-link" href="add.html">Add Pet</a></li>
+      <!-- LINKS -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav align-items-center ms-4">
+
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="index.html">
+              <span class="material-icons me-1" style="font-size:18px;">home</span>
+              Home
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="pets.html">
+              <span class="material-icons me-1" style="font-size:18px;">list</span>
+              Browse Pets
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="gallery.html">
+              <span class="material-icons me-1" style="font-size:18px;">photo</span>
+              Gallery
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="add.html">
+              <span class="material-icons me-1" style="font-size:18px;">add_circle</span>
+              Add Pet
+            </a>
+          </li>
+
         </ul>
       </div>
+
     </div>
   </nav>
 </header>
@@ -45,22 +77,27 @@
 <main class="container my-5">
 
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Pet Gallery</h1>
+    <h1 class="gallery-title">Pet Gallery</h1>
 
     <!-- FILTER -->
-    <select id="filter" class="form-select w-auto">
-      <option value="all">Show All</option>
-      <option value="Available">Available</option>
-      <option value="Pending">Pending</option>
-      <option value="Adopted">Adopted</option>
-    </select>
+    <div class="d-flex align-items-center gap-2">
+  <span class="material-icons text-info" style="font-size:18px;">filter_list</span>
+  <span class="text-light small">Filter by Status:</span>
+
+  <select id="filter" class="form-select custom-filter">
+    <option value="all">Show All</option>
+    <option value="Available">Available</option>
+    <option value="Pending">Pending</option>
+    <option value="Adopted">Adopted</option>
+  </select>
   </div>
+</div>
 
   <!-- GRID -->
   <div class="row g-4">
 
   <!-- CARD -->
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/dog1.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -72,7 +109,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/cat1.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -84,7 +121,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/dog2.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -96,7 +133,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Pending">
+  <div class="col-md-3 pet-card" data-status="Pending">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/cat2.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -108,7 +145,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/bird.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -120,7 +157,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/dog3.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -132,7 +169,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/cat3.jpg" class="card-img-top gallery-img">
       <div class="card-body">
@@ -144,7 +181,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" data-status="Available">
+  <div class="col-md-3 pet-card" data-status="Available">
     <div class="card bg-dark text-white border-0 p-2">
       <img src="assets/images/pets/dog4.jpg" class="card-img-top gallery-img">
       <div class="card-body">
