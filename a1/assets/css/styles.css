@@ -1,0 +1,76 @@
+/* Body */
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(to right, #0f172a, #1e293b);
+  color: white;
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(to right, #6366f1, #4f46e5);
+}
+
+/* Footer */
+footer {
+  background-color: #111827;
+  font-size: 14px;
+}
+.card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+.card img {
+  height: 200px;
+  object-fit: cover;
+}
+.carousel-caption {
+  background: rgba(99, 102, 241, 0.8);
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.gallery-img {
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.card {
+  border-radius: 15px;
+}
+
+.badge {
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.modal-content {
+  border-radius: 15px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-body img {
+  max-height: 500px;
+  object-fit: cover;
+}
+
+.upload-box {
+  border: 2px dashed #6366f1;
+  border-radius: 10px;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.preview-img {
+  max-width: 200px;
+  border-radius: 10px;
+  border: 2px solid #ccc;
+}
