@@ -4,3 +4,6 @@ vendor/
 *.log
 .DS_Store
 Thumbs.db
+
+# Assignment requirement
+a2/assets/images/pets/
