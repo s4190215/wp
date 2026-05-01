@@ -3,34 +3,72 @@ include 'includes/header.inc';
 include 'includes/nav.inc'; 
 include 'includes/db_connect.inc'; 
 
-// HANDLE FORM SUBMISSION
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-  $name = $_POST['name'];
-  $species = $_POST['species'];
-  $breed = $_POST['breed'];
-  $age_years = $_POST['age_years'];
-  $age_months = $_POST['age_months'];
-  $gender = $_POST['gender'];
-  $size = $_POST['size'];
-  $price = $_POST['price'];
-  $description = $_POST['description'];
-  $health = $_POST['health'];
-  $status = $_POST['status'];
+  // CLEAN INPUTS
+  $name = trim($_POST['name']);
+  $species = trim($_POST['species']);
+  $breed = trim($_POST['breed']);
+  $age_years = (int) $_POST['age_years'];
+  $age_months = (int) $_POST['age_months'];
+  $gender = trim($_POST['gender']);
+  $size = trim($_POST['size']);
+  $price = (float) $_POST['price'];
+  $description = trim($_POST['description']);
+  $health = trim($_POST['health']);
+  $status = trim($_POST['status']);
 
-  // IMAGE UPLOAD
-  $imageName = $_FILES['image']['name'];
-  $tempName = $_FILES['image']['tmp_name'];
+  // IMAGE UPLOAD VALIDATION
+  $image = $_FILES['image'];
 
-  // UNIQUE FILE NAME
-  $newImageName = uniqid() . "_" . $imageName;
+  if ($image['error'] === 0) {
 
-  move_uploaded_file($tempName, "assets/images/pets/" . $newImageName);
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
-  // INSERT INTO DATABASE (PREPARED STATEMENT)
-  $stmt = mysqli_prepare($conn, "INSERT INTO pets (name, species, breed, age_years, age_months, gender, size, price, description, health, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    if (!in_array($image['type'], $allowedTypes)) {
+      echo "<div class='alert alert-danger'>Invalid image type!</div>";
+      exit();
+    }
 
-  mysqli_stmt_bind_param($stmt, "sssiiissssss", $name, $species, $breed, $age_years, $age_months, $gender, $size, $price, $description, $health, $status, $newImageName);
+    // UNIQUE NAME
+    $extension = pathinfo($image['name'], PATHINFO_EXTENSION);
+    $newImageName = uniqid("pet_", true) . "." . $extension;
+
+    $uploadPath = "assets/images/pets/" . $newImageName;
+
+    if (!move_uploaded_file($image['tmp_name'], $uploadPath)) {
+      echo "<div class='alert alert-danger'>Image upload failed!</div>";
+      exit();
+    }
+
+  } else {
+    echo "<div class='alert alert-danger'>No image uploaded!</div>";
+    exit();
+  }
+
+  // INSERT INTO DATABASE
+  $stmt = mysqli_prepare($conn, 
+    "INSERT INTO pets 
+    (name, species, breed, age_years, age_months, gender, size, price, description, health, status, image) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+  );
+
+  mysqli_stmt_bind_param(
+    $stmt, 
+    "sssiiissssss", 
+    $name, 
+    $species, 
+    $breed, 
+    $age_years, 
+    $age_months, 
+    $gender, 
+    $size, 
+    $price, 
+    $description, 
+    $health, 
+    $status, 
+    $newImageName
+  );
 
   mysqli_stmt_execute($stmt);
 
@@ -127,9 +165,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
 
       <div class="col-12">
-        <label class="form-label">Pet Photo</label>
-        <input type="file" name="image" class="form-control" required>
-      </div>
+      <label class="form-label">Pet Photo</label>
+      <input type="file" name="image" class="form-control" required accept="image/*">
+    </div>
 
       <div class="col-12 mt-3">
         <button type="submit" class="btn btn-primary">Add Pet</button>

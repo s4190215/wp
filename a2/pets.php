@@ -8,7 +8,9 @@
 
   <!-- SEARCH -->
   <form method="GET" class="mb-4 d-flex">
-    <input type="text" name="search" class="form-control me-2" placeholder="Search pet by name..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+    <input type="text" name="search" class="form-control me-2" 
+      placeholder="Search pet by name..." 
+      value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
     <button class="btn btn-primary">Search</button>
   </form>
 
@@ -37,35 +39,54 @@
         <tbody>
 
         <?php
-        $search = "";
+        if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
 
-        if (isset($_GET['search']) && !empty($_GET['search'])) {
-        $search = $_GET['search'];
-        $stmt = mysqli_prepare($conn, "SELECT * FROM pets WHERE name LIKE ? OR species LIKE ?");
-        
-        $searchParam = "%$search%";
-        mysqli_stmt_bind_param($stmt, "ss", $searchParam, $searchParam);
+            $search = trim($_GET['search']);
+            $searchParam = "%$search%";
+
+            $stmt = mysqli_prepare($conn, 
+              "SELECT * FROM pets 
+               WHERE (name LIKE ? OR species LIKE ?) 
+               AND status = 'Available'"
+            );
+
+            mysqli_stmt_bind_param($stmt, "ss", $searchParam, $searchParam);
 
         } else {
-            $stmt = mysqli_prepare($conn, "SELECT * FROM pets WHERE status='Available' ORDER BY id DESC");
+
+            $stmt = mysqli_prepare($conn, 
+              "SELECT * FROM pets 
+               WHERE status='Available' 
+               ORDER BY id DESC"
+            );
         }
 
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
 
-        while ($row = mysqli_fetch_assoc($result)) {
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
         ?>
 
           <tr>
             <td>
-              <a href="details.php?id=<?= $row['id'] ?>">
+              <a href="details.php?id=<?= htmlspecialchars($row['id']) ?>">
                 <?= htmlspecialchars($row['name']) ?>
               </a>
             </td>
             <td><?= htmlspecialchars($row['species']) ?></td>
             <td><?= htmlspecialchars($row['breed']) ?></td>
             <td><?= htmlspecialchars($row['size']) ?></td>
-            <td>$<?= $row['price'] ?></td>
+            <td>$<?= htmlspecialchars($row['price']) ?></td>
+          </tr>
+
+        <?php 
+            }
+        } else {
+        ?>
+
+          <tr>
+            <td colspan="5" class="text-center">No pets found</td>
           </tr>
 
         <?php } ?>
