@@ -66,6 +66,13 @@ $result = mysqli_stmt_get_result($stmt);
                             View Details
                         </a>
 
+                        <a 
+                            href="edit.php?id=<?= $pet['id'] ?>" 
+                            class="btn btn-warning btn-sm"
+                        >
+                            Edit
+                        </a>
+
                     </div>
 
                 </div>
