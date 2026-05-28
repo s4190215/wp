@@ -3,6 +3,14 @@ include 'includes/header.inc';
 include 'includes/nav.inc'; 
 include 'includes/db_connect.inc'; 
 
+if (!isset($_SESSION['user_id'])) {
+
+    $_SESSION['flash'] = "Please login first.";
+
+    header("Location: login.php");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // CLEAN INPUTS
@@ -17,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $description = trim($_POST['description']);
   $health = trim($_POST['health']);
   $status = trim($_POST['status']);
+  $owner_id = $_SESSION['user_id'];
 
   // IMAGE UPLOAD VALIDATION
   $image = $_FILES['image'];
@@ -49,13 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // INSERT INTO DATABASE
   $stmt = mysqli_prepare($conn, 
     "INSERT INTO pets 
-    (name, species, breed, age_years, age_months, gender, size, price, description, health, status, image) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    (name, species, breed, age_years, age_months, gender, size, price, description, health, status, image, owner_id) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
   );
 
   mysqli_stmt_bind_param(
     $stmt, 
-    "sssiiissssss", 
+    "sssiiissssssi", 
     $name, 
     $species, 
     $breed, 
@@ -67,7 +76,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $description, 
     $health, 
     $status, 
-    $newImageName
+    $newImageName,
+    $owner_id
   );
 
   mysqli_stmt_execute($stmt);
