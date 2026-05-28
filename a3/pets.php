@@ -6,13 +6,85 @@
 
   <h1 class="mb-4">All Available Pets</h1>
 
-  <!-- SEARCH -->
-  <form method="GET" class="mb-4 d-flex">
-    <input type="text" name="search" class="form-control me-2" 
-      placeholder="Search pet by name..." 
-      value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-    <button class="btn btn-primary">Search</button>
-  </form>
+  <form method="GET" class="row g-3 mb-4">
+
+  <div class="col-md-4">
+    <input 
+      type="text" 
+      name="search" 
+      class="form-control"
+      placeholder="Search pets..."
+      value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>"
+    >
+  </div>
+
+  <div class="col-md-2">
+    <select name="status" class="form-control">
+
+      <option value="">All Status</option>
+
+      <option value="Available">
+        Available
+      </option>
+
+      <option value="Pending">
+        Pending
+      </option>
+
+      <option value="Adopted">
+        Adopted
+      </option>
+
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <select name="gender" class="form-control">
+
+      <option value="">All Genders</option>
+
+      <option value="Male">
+        Male
+      </option>
+
+      <option value="Female">
+        Female
+      </option>
+
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <select name="sort" class="form-control">
+
+      <option value="">Sort By</option>
+
+      <option value="latest">
+        Latest
+      </option>
+
+      <option value="oldest">
+        Oldest
+      </option>
+
+      <option value="lowprice">
+        Lowest Price
+      </option>
+
+      <option value="highprice">
+        Highest Price
+      </option>
+
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <button class="btn btn-primary w-100">
+      Search
+    </button>
+  </div>
+
+</form>
 
   <div class="row align-items-center">
 
@@ -39,30 +111,89 @@
         <tbody>
 
         <?php
-        if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
 
-            $search = trim($_GET['search']);
-            $searchParam = "%$search%";
+$search = $_GET['search'] ?? '';
+$status = $_GET['status'] ?? '';
+$gender = $_GET['gender'] ?? '';
+$sort = $_GET['sort'] ?? '';
 
-            $stmt = mysqli_prepare($conn, 
-              "SELECT * FROM pets 
-               WHERE (name LIKE ? OR species LIKE ?) 
-               AND status = 'Available'"
-            );
+$sql = "SELECT * FROM pets WHERE 1=1";
 
-            mysqli_stmt_bind_param($stmt, "ss", $searchParam, $searchParam);
+$params = [];
+$types = "";
 
-        } else {
+// SEARCH
+if (!empty($search)) {
 
-            $stmt = mysqli_prepare($conn, 
-              "SELECT * FROM pets 
-               WHERE status='Available' 
-               ORDER BY id DESC"
-            );
-        }
+    $sql .= " AND (name LIKE ? OR species LIKE ? OR breed LIKE ?)";
 
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
+    $searchTerm = "%$search%";
+
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+
+    $types .= "sss";
+}
+
+// STATUS
+if (!empty($status)) {
+
+    $sql .= " AND status = ?";
+
+    $params[] = $status;
+
+    $types .= "s";
+}
+
+// GENDER
+if (!empty($gender)) {
+
+    $sql .= " AND gender = ?";
+
+    $params[] = $gender;
+
+    $types .= "s";
+}
+
+// SORTING
+switch ($sort) {
+
+    case 'latest':
+        $sql .= " ORDER BY id DESC";
+        break;
+
+    case 'oldest':
+        $sql .= " ORDER BY id ASC";
+        break;
+
+    case 'lowprice':
+        $sql .= " ORDER BY price ASC";
+        break;
+
+    case 'highprice':
+        $sql .= " ORDER BY price DESC";
+        break;
+
+    default:
+        $sql .= " ORDER BY id DESC";
+}
+
+$stmt = mysqli_prepare($conn, $sql);
+
+if (!empty($params)) {
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        $types,
+        ...$params
+    );
+}
+
+mysqli_stmt_execute($stmt);
+
+$result = mysqli_stmt_get_result($stmt);
+
 
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
