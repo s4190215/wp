@@ -45,6 +45,12 @@
       <span class="material-icons me-1" style="font-size:18px;">add_circle</span>
       Add Pet
     </a>
+    <li class="nav-item">
+  <a class="nav-link d-flex align-items-center" href="owner.php">
+    <span class="material-icons me-1" style="font-size:18px;">pets</span>
+    My Pets
+  </a>
+</li>
   </li>
 
   <li class="nav-item">
