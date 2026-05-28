@@ -2,6 +2,22 @@
 session_start();
 ?>
 
+<?php if (isset($_SESSION['flash'])): ?>
+
+<div class="container mt-3">
+    <div class="alert alert-success alert-dismissible fade show">
+
+        <?= $_SESSION['flash']; ?>
+
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+    </div>
+</div>
+
+<?php unset($_SESSION['flash']); ?>
+
+<?php endif; ?>
+
 <!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
