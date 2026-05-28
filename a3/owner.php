@@ -72,6 +72,13 @@ $result = mysqli_stmt_get_result($stmt);
                         >
                             Edit
                         </a>
+                        <a 
+                            href="delete.php?id=<?= $pet['id'] ?>" 
+                            class="btn btn-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to delete this pet?')"
+                        >
+                            Delete
+                        </a>
 
                     </div>
 
