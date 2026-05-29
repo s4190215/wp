@@ -37,6 +37,12 @@
               Gallery
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link d-flex align-items-center" href="search.php">
+                <span class="material-icons me-1" style="font-size:18px;">search</span>
+                Search
+            </a>
+        </li>
 
           </ul>
 

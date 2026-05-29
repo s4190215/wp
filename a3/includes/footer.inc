@@ -1,5 +1,5 @@
 <footer class="text-center text-white py-3">
-  © 2026 s123456. Connecting pets with loving homes.
+  © 2026 s4190215. Connecting pets with loving homes.
 </footer>
 
 <!-- Bootstrap JS -->

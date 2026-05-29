@@ -8,16 +8,30 @@ $message = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $username = trim($_POST['username']);
-    $email = trim($_POST['email']);
-    $password = $_POST['password'];
+$email = trim($_POST['email']);
+$password = $_POST['password'];
+$phone = trim($_POST['phone']);
+$location = trim($_POST['location']);
 
     // HASH PASSWORD
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
     // PREPARED STATEMENT
-    $stmt = mysqli_prepare($conn, "INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-
-    mysqli_stmt_bind_param($stmt, "sss", $username, $email, $hashedPassword);
+$stmt = mysqli_prepare(
+    $conn,
+    "INSERT INTO users
+    (username, email, password, phone, location)
+    VALUES (?, ?, ?, ?, ?)"
+);
+    mysqli_stmt_bind_param(
+    $stmt,
+    "sssss",
+    $username,
+    $email,
+    $hashedPassword,
+    $phone,
+    $location
+);
 
     if (mysqli_stmt_execute($stmt)) {
 
@@ -74,6 +88,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label class="form-label">Password</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Phone (Optional)</label>
+                            <input type="text" name="phone" class="form-control">
+                        </div>
+
+                        <div class="mb-3">
+                        <label class="form-label">Location (Optional)</label>
+                        <input
+                            type="text"
+                            name="location"
+                            class="form-control"
+                            placeholder="e.g., Melbourne, VIC">
+                    </div>
 
                         <button type="submit" class="btn btn-primary w-100">
                             Register
