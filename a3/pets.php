@@ -4,7 +4,9 @@
 
 <main class="container my-5">
 
-  <h1 class="mb-4">All Available Pets</h1>
+  <h1 class="mb-4 fw-bold" style="color:#7c6cff;">
+    All Available Pets
+</h1>
 
   <form method="GET" class="row g-3 mb-4">
 
@@ -105,6 +107,7 @@
             <th>Breed</th>
             <th>Size</th>
             <th>Fee ($)</th>
+            <th>Owner</th>
           </tr>
         </thead>
 
@@ -117,7 +120,13 @@ $status = $_GET['status'] ?? '';
 $gender = $_GET['gender'] ?? '';
 $sort = $_GET['sort'] ?? '';
 
-$sql = "SELECT * FROM pets WHERE 1=1";
+$sql = "
+SELECT pets.*, users.username
+FROM pets
+LEFT JOIN users ON pets.owner_id = users.id
+WHERE 1=1
+";
+
 
 $params = [];
 $types = "";
@@ -209,7 +218,16 @@ $result = mysqli_stmt_get_result($stmt);
             <td><?= htmlspecialchars($row['breed']) ?></td>
             <td><?= htmlspecialchars($row['size']) ?></td>
             <td>$<?= htmlspecialchars($row['price']) ?></td>
-          </tr>
+
+            <td>
+              <span class="material-icons align-middle text-primary"
+                    style="font-size:14px;">
+                    person
+              </span>
+
+              <?= htmlspecialchars($row['username']) ?>
+            </td>
+              </tr>
 
         <?php 
             }
@@ -217,7 +235,7 @@ $result = mysqli_stmt_get_result($stmt);
         ?>
 
           <tr>
-            <td colspan="5" class="text-center">No pets found</td>
+            <td colspan="6" class="text-center">No pets found</td>
           </tr>
 
         <?php } ?>

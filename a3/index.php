@@ -12,6 +12,13 @@
         <img src="assets/images/pets/dog1.jpg" class="d-block w-100 rounded">
         <div class="carousel-caption">
           <h3>Buddy</h3>
+          <a href="details.php?id=1"
+          class="btn btn-light btn-sm mt-2">
+          <span class="material-icons align-middle" style="font-size:14px;">
+            visibility
+          </span>
+          View Details
+        </a>
         </div>
       </div>
 
@@ -19,6 +26,13 @@
         <img src="assets/images/pets/cat1.jpg" class="d-block w-100 rounded">
         <div class="carousel-caption">
           <h3>Whiskers</h3>
+          <a href="details.php?id=2"
+          class="btn btn-light btn-sm mt-2">
+          <span class="material-icons align-middle" style="font-size:14px;">
+            visibility
+          </span>
+          View Details
+        </a>
         </div>
       </div>
 
@@ -26,6 +40,13 @@
         <img src="assets/images/pets/dog2.jpg" class="d-block w-100 rounded">
         <div class="carousel-caption">
           <h3>Max</h3>
+          <a href="details.php?id=3"
+          class="btn btn-light btn-sm mt-2">
+          <span class="material-icons align-middle" style="font-size:14px;">
+            visibility
+          </span>
+          View Details
+        </a>
         </div>
       </div>
 
@@ -33,6 +54,13 @@
         <img src="assets/images/pets/bird.jpg" class="d-block w-100 rounded">
         <div class="carousel-caption">
           <h3>Charlie</h3>
+          <a href="details.php?id=4"
+          class="btn btn-light btn-sm mt-2">
+          <span class="material-icons align-middle" style="font-size:14px;">
+            visibility
+          </span>
+          View Details
+        </a>
         </div>
       </div>
 
@@ -55,7 +83,13 @@
   <div class="row g-4">
 
   <?php
-$sql = "SELECT * FROM pets ORDER BY id DESC LIMIT 4";
+$sql = "
+SELECT pets.*, users.username
+FROM pets
+JOIN users ON pets.owner_id = users.id
+ORDER BY pets.id DESC
+LIMIT 4
+";
 $result = mysqli_query($conn, $sql);
 
 while ($row = mysqli_fetch_assoc($result)) {
@@ -66,9 +100,26 @@ while ($row = mysqli_fetch_assoc($result)) {
       <img src="assets/images/pets/<?= $row['image'] ?>" class="card-img-top">
 
       <div class="card-body">
-        <h5><?= $row['name'] ?></h5>
-        <p>$<?= $row['price'] ?></p>
-      </div>
+
+  <h5><?= htmlspecialchars($row['name']) ?></h5>
+
+      <p class="mb-1">
+  $<?= number_format($row['price'], 2) ?>
+</p>
+
+<small class="text-info d-block mb-2">
+  <?= htmlspecialchars($row['username']) ?>
+</small>
+
+<a href="details.php?id=<?= $row['id'] ?>"
+   class="btn btn-primary btn-sm">
+   <span class="material-icons align-middle" style="font-size:14px;">
+      visibility
+   </span>
+   View Details
+</a>
+
+</div>
     </div>
   </div>
 

@@ -15,7 +15,7 @@
 
       <!-- LINKS -->
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav align-items-center ms-4">
+        <ul class="navbar-nav me-auto ms-4">
 
           <li class="nav-item">
             <a class="nav-link d-flex align-items-center" href="index.php">
@@ -38,6 +38,9 @@
             </a>
           </li>
 
+          </ul>
+
+          <ul class="navbar-nav align-items-center ms-auto">
           <?php if (isset($_SESSION['user_id'])): ?>
 
   <li class="nav-item">

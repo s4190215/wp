@@ -54,6 +54,14 @@ include 'includes/db_connect.inc';
           <?php } ?>
 
           <p class="mt-2">$<?= $row['price'] ?></p>
+
+          <a href="details.php?id=<?= $row['id'] ?>" 
+            class="btn btn-primary btn-sm mt-2">
+              <span class="material-icons align-middle" style="font-size:14px;">
+                  visibility
+              </span>
+              View Details
+          </a>
         </div>
 
       </div>
